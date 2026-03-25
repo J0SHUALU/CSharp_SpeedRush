@@ -34,9 +34,9 @@ right moment can mean the difference between victory and defeat.
 3. **Select a car** — click any car in the list to see its full stats on the right
 4. **Click "Start Race!"** — the race begins immediately
 5. **Each turn, choose one action:**
-   - 🚀 **Speed Up** — fastest progress (+25–30% lap), highest fuel burn, only 12s used
-   - ➡ **Maintain Speed** — moderate progress (+15–20% lap), normal fuel burn, 15s used
-   - ⛽ **Pit Stop** — no progress, refuels the car, costs 15s + car-specific penalty
+   - **Speed Up** — fastest progress (+25–30% lap), highest fuel burn, only 12s used
+   - **Maintain Speed** — moderate progress (+15–20% lap), normal fuel burn, 15s used
+   - **Pit Stop** — no progress, refuels the car, costs 15s + car-specific penalty
 6. **Watch your gauges:**
    - Green bar = remaining fuel
    - Blue bar = remaining time
