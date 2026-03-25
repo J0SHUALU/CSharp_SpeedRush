@@ -1,275 +1,222 @@
 <Window xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:vm="using:CSharpSpeedRush.ViewModels"
-        xmlns:models="using:CSharpSpeedRush.Models"
         xmlns:material="using:Material.Icons.Avalonia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="780" d:DesignHeight="520"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="680"
         x:Class="CSharpSpeedRush.Views.CarSelectionWindow"
         x:DataType="vm:CarSelectionViewModel"
         Title="Select Your Car — C# Speed Rush"
-        Width="780" Height="520"
+        Width="900" Height="680"
         WindowStartupLocation="CenterScreen"
-        Background="#080812"
+        Background="#1C1C1C"
         CanResize="False">
 
     <Design.DataContext>
         <vm:CarSelectionViewModel/>
     </Design.DataContext>
 
-    <Grid RowDefinitions="6,Auto,*,Auto">
+    <Grid RowDefinitions="Auto,*,80">
 
-        <!-- Top stripe -->
-        <Border Grid.Row="0">
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                    <GradientStop Color="#FF0055" Offset="0"/>
-                    <GradientStop Color="#FF6600" Offset="0.5"/>
-                    <GradientStop Color="#FF0055" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>
-        </Border>
-
-        <!-- Header -->
-        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center"
-                    Spacing="14" Margin="0,18,0,16">
-            <material:MaterialIcon Kind="FlagCheckered" Width="30" Height="30" Foreground="#FF6600"/>
-            <TextBlock Text="CHOOSE YOUR MACHINE"
-                       FontSize="22" FontWeight="Black" LetterSpacing="4"
-                       Foreground="White" VerticalAlignment="Center"/>
-            <material:MaterialIcon Kind="FlagCheckered" Width="30" Height="30" Foreground="#FF6600"/>
+        <!-- HEADER -->
+        <StackPanel Grid.Row="0" Margin="40,32,40,24">
+            <TextBlock Text="CHOOSE YOUR MACHINE" FontSize="28" FontWeight="Black"
+                       LetterSpacing="3" Foreground="White"/>
+            <Border Height="3" Width="60" Background="#FF6B5B"
+                    HorizontalAlignment="Left" Margin="0,8,0,0"/>
         </StackPanel>
 
-        <!-- Main content: 3 car cards on left, stats on right -->
-        <Grid Grid.Row="2" ColumnDefinitions="*,*,*,16,300" Margin="16,0,16,0">
+        <!-- CAR CARDS -->
+        <Grid Grid.Row="1" ColumnDefinitions="*,10,*,10,*" Margin="40,0,40,0">
 
-            <!-- Sports Car card -->
-            <Border Grid.Column="0" CornerRadius="10" Margin="4,0"
-                    BorderThickness="2"
-                    Cursor="Hand">
-                <Border.BorderBrush>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                        <GradientStop Color="#FF0055" Offset="0"/>
-                        <GradientStop Color="#330011" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.BorderBrush>
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                        <GradientStop Color="#1A0010" Offset="0"/>
-                        <GradientStop Color="#0D0008" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <Button Command="{Binding SelectSportsCarCommand}"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Stretch"
-                        Padding="0">
-                    <StackPanel Spacing="0" HorizontalAlignment="Center">
-                        <!-- Icon badge -->
-                        <Border CornerRadius="10,10,0,0" Height="100" Margin="0">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                                    <GradientStop Color="#FF005533" Offset="0"/>
-                                    <GradientStop Color="#FF005508" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <StackPanel VerticalAlignment="Center" Spacing="4">
-                                <material:MaterialIcon Kind="CarSports"
-                                                       Width="52" Height="52"
-                                                       Foreground="#FF0055"
-                                                       HorizontalAlignment="Center"/>
-                                <TextBlock Text="220 km/h"
-                                           FontSize="11" FontWeight="Bold"
-                                           LetterSpacing="1"
-                                           Foreground="#FF0055"
-                                           HorizontalAlignment="Center"/>
+            <!-- ═══ SPORTS CAR ═══ -->
+            <Border Grid.Column="0"
+                    BorderBrush="#2A2A2A" BorderThickness="1" CornerRadius="3" Cursor="Hand">
+                <Grid>
+                    <Border Background="#1E1E1E" CornerRadius="3" IsVisible="{Binding !SportsCarSelected}"/>
+                    <Border Background="#1A1A50" CornerRadius="3" IsVisible="{Binding SportsCarSelected}"/>
+                    <Button Background="Transparent" BorderThickness="0"
+                            Command="{Binding SelectSportsCarCommand}"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top"
+                            Padding="20,20,20,20">
+                        <StackPanel>
+                            <TextBlock Text="ID 001" FontSize="9" LetterSpacing="3"
+                                       Foreground="#444444" Margin="0,0,0,8"/>
+                            <material:MaterialIcon Kind="CarSports" Width="36" Height="36"
+                                                   Foreground="#FF6B5B" HorizontalAlignment="Left"
+                                                   Margin="0,0,0,8"/>
+                            <TextBlock Text="SPORTS CAR" FontSize="20" FontWeight="Black"
+                                       LetterSpacing="1" Foreground="White" Margin="0,0,0,20"/>
+                            <StackPanel Spacing="12">
+                                <StackPanel>
+                                    <TextBlock Text="Max Speed"     FontSize="9"  Foreground="#555555"/>
+                                    <TextBlock Text="220 KM/H"     FontSize="15" FontWeight="Bold" Foreground="White" Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Fuel Capacity" FontSize="9"  Foreground="#555555"/>
+                                    <TextBlock Text="60 L"         FontSize="15" FontWeight="Bold" Foreground="White" Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Fuel Per Turn" FontSize="9"  Foreground="#555555"/>
+                                    <TextBlock Text="4.5 L"        FontSize="15" FontWeight="Bold" Foreground="White" Margin="0,2,0,0"/>
+                                </StackPanel>
                             </StackPanel>
-                        </Border>
-                        <!-- Label -->
-                        <Border Padding="10,10,10,14"><StackPanel Spacing="4">
-                            <TextBlock Text="SPORTS CAR"
-                                       FontSize="13" FontWeight="Black"
-                                       LetterSpacing="2"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"/>
-                            <TextBlock Text="Fastest · Thirsty"
-                                       FontSize="10"
-                                       Foreground="#665566"
-                                       HorizontalAlignment="Center"/>
-                        </StackPanel></Border>
-                    </StackPanel>
-                </Button>
+                            <Border Margin="0,20,0,0" Padding="0,10"
+                                    BorderThickness="1" BorderBrush="#303030" CornerRadius="2"
+                                    IsVisible="{Binding !SportsCarSelected}">
+                                <TextBlock Text="Select" FontSize="11" FontWeight="Bold"
+                                           Foreground="#555555" HorizontalAlignment="Center"/>
+                            </Border>
+                            <Border Margin="0,20,0,0" Padding="0,10"
+                                    Background="#4466FF" CornerRadius="2"
+                                    IsVisible="{Binding SportsCarSelected}">
+                                <TextBlock Text="Selected" FontSize="11" FontWeight="Bold"
+                                           Foreground="White" HorizontalAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                    </Button>
+                </Grid>
             </Border>
 
-            <!-- Eco Car card -->
-            <Border Grid.Column="1" CornerRadius="10" Margin="4,0"
-                    BorderThickness="2">
-                <Border.BorderBrush>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                        <GradientStop Color="#00FF88" Offset="0"/>
-                        <GradientStop Color="#003322" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.BorderBrush>
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                        <GradientStop Color="#001A0E" Offset="0"/>
-                        <GradientStop Color="#000D07" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <Button Command="{Binding SelectEcoCarCommand}"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Stretch"
-                        Padding="0">
-                    <StackPanel Spacing="0" HorizontalAlignment="Center">
-                        <Border CornerRadius="10,10,0,0" Height="100">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                                    <GradientStop Color="#00FF8833" Offset="0"/>
-                                    <GradientStop Color="#00FF8808" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <StackPanel VerticalAlignment="Center" Spacing="4">
-                                <material:MaterialIcon Kind="CarSports"
-                                                       Width="52" Height="52"
-                                                       Foreground="#00FF88"
-                                                       HorizontalAlignment="Center"/>
-                                <TextBlock Text="160 km/h"
-                                           FontSize="11" FontWeight="Bold"
-                                           LetterSpacing="1"
-                                           Foreground="#00FF88"
-                                           HorizontalAlignment="Center"/>
+            <!-- ═══ ECO CAR ═══ -->
+            <Border Grid.Column="2"
+                    BorderBrush="#2A2A2A" BorderThickness="1" CornerRadius="3" Cursor="Hand">
+                <Grid>
+                    <Border Background="#1E1E1E" CornerRadius="3" IsVisible="{Binding !EcoCarSelected}"/>
+                    <Border Background="#1A1A50" CornerRadius="3" IsVisible="{Binding EcoCarSelected}"/>
+                    <Button Background="Transparent" BorderThickness="0"
+                            Command="{Binding SelectEcoCarCommand}"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top"
+                            Padding="20,20,20,20">
+                        <StackPanel>
+                            <TextBlock Text="ID 002" FontSize="9" LetterSpacing="3"
+                                       Foreground="#444444" Margin="0,0,0,8"/>
+                            <material:MaterialIcon Kind="CarSports" Width="36" Height="36"
+                                                   Foreground="#00CC88" HorizontalAlignment="Left"
+                                                   Margin="0,0,0,8"/>
+                            <TextBlock Text="ECO CAR" FontSize="20" FontWeight="Black"
+                                       LetterSpacing="1" Foreground="White" Margin="0,0,0,20"/>
+                            <StackPanel Spacing="12">
+                                <StackPanel>
+                                    <TextBlock Text="Max Speed"     FontSize="9"  Foreground="#555555"/>
+                                    <TextBlock Text="160 KM/H"     FontSize="15" FontWeight="Bold" Foreground="White" Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Fuel Capacity" FontSize="9"  Foreground="#555555"/>
+                                    <TextBlock Text="45 L"         FontSize="15" FontWeight="Bold" Foreground="White" Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Fuel Per Turn" FontSize="9"  Foreground="#555555"/>
+                                    <TextBlock Text="2.0 L"        FontSize="15" FontWeight="Bold" Foreground="White" Margin="0,2,0,0"/>
+                                </StackPanel>
                             </StackPanel>
-                        </Border>
-                        <Border Padding="10,10,10,14"><StackPanel Spacing="4">
-                            <TextBlock Text="ECO CAR"
-                                       FontSize="13" FontWeight="Black"
-                                       LetterSpacing="2"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"/>
-                            <TextBlock Text="Efficient · Steady"
-                                       FontSize="10"
-                                       Foreground="#336655"
-                                       HorizontalAlignment="Center"/>
-                        </StackPanel></Border>
-                    </StackPanel>
-                </Button>
+                            <Border Margin="0,20,0,0" Padding="0,10"
+                                    BorderThickness="1" BorderBrush="#303030" CornerRadius="2"
+                                    IsVisible="{Binding !EcoCarSelected}">
+                                <TextBlock Text="Select" FontSize="11" FontWeight="Bold"
+                                           Foreground="#555555" HorizontalAlignment="Center"/>
+                            </Border>
+                            <Border Margin="0,20,0,0" Padding="0,10"
+                                    Background="#4466FF" CornerRadius="2"
+                                    IsVisible="{Binding EcoCarSelected}">
+                                <TextBlock Text="Selected" FontSize="11" FontWeight="Bold"
+                                           Foreground="White" HorizontalAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                    </Button>
+                </Grid>
             </Border>
 
-            <!-- Muscle Car card -->
-            <Border Grid.Column="2" CornerRadius="10" Margin="4,0"
-                    BorderThickness="2">
-                <Border.BorderBrush>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                        <GradientStop Color="#FF9900" Offset="0"/>
-                        <GradientStop Color="#332200" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.BorderBrush>
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                        <GradientStop Color="#1A0E00" Offset="0"/>
-                        <GradientStop Color="#0D0700" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-                <Button Command="{Binding SelectMuscleCarCommand}"
-                        Background="Transparent"
-                        BorderThickness="0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Stretch"
-                        HorizontalContentAlignment="Center"
-                        VerticalContentAlignment="Stretch"
-                        Padding="0">
-                    <StackPanel Spacing="0" HorizontalAlignment="Center">
-                        <Border CornerRadius="10,10,0,0" Height="100">
-                            <Border.Background>
-                                <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                                    <GradientStop Color="#FF990033" Offset="0"/>
-                                    <GradientStop Color="#FF990008" Offset="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <StackPanel VerticalAlignment="Center" Spacing="4">
-                                <material:MaterialIcon Kind="CarSports"
-                                                       Width="52" Height="52"
-                                                       Foreground="#FF9900"
-                                                       HorizontalAlignment="Center"/>
-                                <TextBlock Text="200 km/h"
-                                           FontSize="11" FontWeight="Bold"
-                                           LetterSpacing="1"
-                                           Foreground="#FF9900"
-                                           HorizontalAlignment="Center"/>
-                            </StackPanel>
-                        </Border>
-                        <Border Padding="10,10,10,14"><StackPanel Spacing="4">
-                            <TextBlock Text="MUSCLE CAR"
-                                       FontSize="13" FontWeight="Black"
-                                       LetterSpacing="2"
-                                       Foreground="White"
-                                       HorizontalAlignment="Center"/>
-                            <TextBlock Text="Raw Power · Hungry"
-                                       FontSize="10"
-                                       Foreground="#664422"
-                                       HorizontalAlignment="Center"/>
-                        </StackPanel></Border>
-                    </StackPanel>
-                </Button>
-            </Border>
-
-            <!-- Stats panel -->
+            <!-- ═══ MUSCLE CAR ═══ -->
             <Border Grid.Column="4"
-                    Background="#0E0E1C"
-                    CornerRadius="10"
-                    BorderThickness="1"
-                    BorderBrush="#1E1E3A"
-                    Padding="18">
-                <ScrollViewer>
-                    <TextBlock Text="{Binding CarDetails}"
-                               FontFamily="Courier New,Consolas,monospace"
-                               FontSize="12"
-                               LineHeight="22"
-                               Foreground="#99AABB"
-                               TextWrapping="Wrap"/>
-                </ScrollViewer>
+                    BorderBrush="#2A2A2A" BorderThickness="1" CornerRadius="3" Cursor="Hand">
+                <Grid>
+                    <Border Background="#1E1E1E" CornerRadius="3" IsVisible="{Binding !MuscleCarSelected}"/>
+                    <Border Background="#1A1A50" CornerRadius="3" IsVisible="{Binding MuscleCarSelected}"/>
+                    <Button Background="Transparent" BorderThickness="0"
+                            Command="{Binding SelectMuscleCarCommand}"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            HorizontalContentAlignment="Stretch" VerticalContentAlignment="Top"
+                            Padding="20,20,20,20">
+                        <StackPanel>
+                            <TextBlock Text="ID 003" FontSize="9" LetterSpacing="3"
+                                       Foreground="#444444" Margin="0,0,0,8"/>
+                            <material:MaterialIcon Kind="CarSports" Width="36" Height="36"
+                                                   Foreground="#FF9900" HorizontalAlignment="Left"
+                                                   Margin="0,0,0,8"/>
+                            <TextBlock Text="MUSCLE CAR" FontSize="20" FontWeight="Black"
+                                       LetterSpacing="1" Foreground="White" Margin="0,0,0,20"/>
+                            <StackPanel Spacing="12">
+                                <StackPanel>
+                                    <TextBlock Text="Max Speed"     FontSize="9"  Foreground="#555555"/>
+                                    <TextBlock Text="200 KM/H"     FontSize="15" FontWeight="Bold" Foreground="White" Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Fuel Capacity" FontSize="9"  Foreground="#555555"/>
+                                    <TextBlock Text="70 L"         FontSize="15" FontWeight="Bold" Foreground="White" Margin="0,2,0,0"/>
+                                </StackPanel>
+                                <StackPanel>
+                                    <TextBlock Text="Fuel Per Turn" FontSize="9"  Foreground="#555555"/>
+                                    <TextBlock Text="6.0 L"        FontSize="15" FontWeight="Bold" Foreground="White" Margin="0,2,0,0"/>
+                                </StackPanel>
+                            </StackPanel>
+                            <Border Margin="0,20,0,0" Padding="0,10"
+                                    BorderThickness="1" BorderBrush="#303030" CornerRadius="2"
+                                    IsVisible="{Binding !MuscleCarSelected}">
+                                <TextBlock Text="Select" FontSize="11" FontWeight="Bold"
+                                           Foreground="#555555" HorizontalAlignment="Center"/>
+                            </Border>
+                            <Border Margin="0,20,0,0" Padding="0,10"
+                                    Background="#4466FF" CornerRadius="2"
+                                    IsVisible="{Binding MuscleCarSelected}">
+                                <TextBlock Text="Selected" FontSize="11" FontWeight="Bold"
+                                           Foreground="White" HorizontalAlignment="Center"/>
+                            </Border>
+                        </StackPanel>
+                    </Button>
+                </Grid>
             </Border>
+
         </Grid>
 
-        <!-- Bottom buttons -->
-        <Grid Grid.Row="3" ColumnDefinitions="*,Auto,16,Auto,*" Margin="16,14,16,18">
-            <Button HorizontalContentAlignment="Center" Grid.Column="1"
-                    Width="130" Height="42" CornerRadius="5"
-                    Background="#10101E" Cursor="Hand"
+        <!-- BOTTOM BAR -->
+        <Grid Grid.Row="2" ColumnDefinitions="Auto,*,Auto"
+              Margin="40,0,40,0" VerticalAlignment="Center">
+
+            <Button Grid.Column="0"
+                    Width="120" Height="44" CornerRadius="2"
+                    Background="#1E1E1E" Cursor="Hand"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center"
                     Click="BackButton_Click">
-                <StackPanel Orientation="Horizontal" Spacing="8">
-                    <material:MaterialIcon Kind="ArrowBack" Width="18" Height="18" Foreground="#445566"/>
-                    <TextBlock Text="BACK" FontSize="13" FontWeight="Bold"
-                               LetterSpacing="2" Foreground="#445566"
-                               VerticalAlignment="Center"/>
+                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                    <material:MaterialIcon Kind="ArrowBack" Width="16" Height="16"
+                                           Foreground="#555555" VerticalAlignment="Center"/>
+                    <TextBlock Text="Back" FontSize="12" FontWeight="Bold"
+                               Foreground="#555555" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
 
-            <Button HorizontalContentAlignment="Center" Grid.Column="3"
+            <Button Grid.Column="2"
                     Command="{Binding StartRaceCommand}"
-                    Width="190" Height="42" CornerRadius="5" Cursor="Hand"
-                    IsEnabled="{Binding SelectedCar, Converter={x:Static ObjectConverters.IsNotNull}}">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                        <GradientStop Color="#CC0044" Offset="0"/>
-                        <GradientStop Color="#FF0055" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-                <StackPanel Orientation="Horizontal" Spacing="10">
-                    <material:MaterialIcon Kind="RocketLaunch" Width="20" Height="20" Foreground="White"/>
-                    <TextBlock Text="START RACE" FontSize="14" FontWeight="Black"
-                               LetterSpacing="2" Foreground="White"
-                               VerticalAlignment="Center"/>
+                    IsEnabled="{Binding SelectedCar, Converter={x:Static ObjectConverters.IsNotNull}}"
+                    Background="#FF6B5B"
+                    Width="200" Height="44"
+                    CornerRadius="2" Cursor="Hand"
+                    HorizontalContentAlignment="Center"
+                    VerticalContentAlignment="Center">
+                <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                    <material:MaterialIcon Kind="RocketLaunch" Width="18" Height="18"
+                                           Foreground="#1C1C1C" VerticalAlignment="Center"/>
+                    <TextBlock Text="START RACE" FontSize="13" FontWeight="Black"
+                               LetterSpacing="2" Foreground="#1C1C1C" VerticalAlignment="Center"/>
                 </StackPanel>
             </Button>
+
         </Grid>
+
     </Grid>
 </Window>
