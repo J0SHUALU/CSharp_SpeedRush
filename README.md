@@ -6,7 +6,7 @@ A turn-based, time-focused racing simulation desktop game built with Avalonia UI
 ## Description
 
 C# Speed Rush puts you behind the wheel of one of three unique racing cars for a tense,
-tactical 5-lap race against the clock. Every turn counts — burn fuel too fast and you'll
+tactical 5-lap race against the clock. Every turn counts, burn fuel too fast and you'll
 stall out; drive too conservatively and the timer will run out. The right pit-stop at the
 right moment can mean the difference between victory and defeat.
 
