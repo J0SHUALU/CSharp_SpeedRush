@@ -208,9 +208,9 @@ public partial class RaceWindowViewModel : ViewModelBase
             _                   => "RACE OVER"
         };
 
-        OutcomeDetail = $"Laps completed: {lapsCompleted} / {_raceManager.ActiveTrack.TotalLaps}" +
-                        $"\nFuel remaining: {result.FuelRemaining:F1} L" +
-                        $"\nTime remaining: {result.TimeRemaining:F0} s";
+        OutcomeDetail = $"Laps Completed    {lapsCompleted} / {_raceManager.ActiveTrack.TotalLaps}\n" +
+                        $"Fuel Remaining    {result.FuelRemaining:F1} L\n" +
+                        $"Time Remaining    {result.TimeRemaining:F0} s";
 
         string outcome = result.State switch
         {
