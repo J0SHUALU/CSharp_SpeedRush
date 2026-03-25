@@ -4,105 +4,71 @@
         xmlns:material="using:Material.Icons.Avalonia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="620" d:DesignHeight="440"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="560"
         x:Class="CSharpSpeedRush.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Title="C# Speed Rush"
-        Width="620" Height="440"
+        Width="800" Height="560"
         WindowStartupLocation="CenterScreen"
-        Background="#080812"
+        Background="#1C1C1C"
         CanResize="False">
 
     <Design.DataContext>
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-    <Grid RowDefinitions="6,*,Auto">
+    <Grid RowDefinitions="*,Auto,*">
 
-        <!-- Neon top stripe -->
-        <Border Grid.Row="0">
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                    <GradientStop Color="#FF0055" Offset="0"/>
-                    <GradientStop Color="#FF6600" Offset="0.5"/>
-                    <GradientStop Color="#FF0055" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>
-        </Border>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center" Spacing="0">
 
-        <!-- Centre content -->
-        <StackPanel Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="0">
+            <!-- Flag icon + accent bar -->
+            <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,0,0,20">
+                <material:MaterialIcon Kind="FlagCheckered" Width="28" Height="28" Foreground="#FF6B5B"/>
+                <Border Height="3" Width="60" Background="#FF6B5B" VerticalAlignment="Center"/>
+            </StackPanel>
 
-            <material:MaterialIcon Kind="CarSports"
-                                   Width="72" Height="72"
-                                   Foreground="#FF0055"
-                                   HorizontalAlignment="Center"
-                                   Margin="0,0,0,10"/>
-
-            <TextBlock Text="C# SPEED RUSH"
-                       FontSize="42" FontWeight="Black"
-                       LetterSpacing="5"
-                       Foreground="White"
-                       HorizontalAlignment="Center"/>
-
-            <Border Height="3" Width="320" CornerRadius="2" Margin="0,6,0,8">
-                <Border.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                        <GradientStop Color="Transparent" Offset="0"/>
-                        <GradientStop Color="#FF0055" Offset="0.4"/>
-                        <GradientStop Color="#FF6600" Offset="0.6"/>
-                        <GradientStop Color="Transparent" Offset="1"/>
-                    </LinearGradientBrush>
-                </Border.Background>
-            </Border>
+            <TextBlock Text="C# SPEED" FontSize="64" FontWeight="Black"
+                       LetterSpacing="3" Foreground="#FF6B5B" LineHeight="72"/>
+            <TextBlock Text="RUSH" FontSize="64" FontWeight="Black"
+                       LetterSpacing="3" Foreground="White" LineHeight="72"
+                       Margin="0,0,0,10"/>
 
             <TextBlock Text="{Binding Tagline}"
-                       FontSize="13" LetterSpacing="2"
-                       Foreground="#445566"
-                       HorizontalAlignment="Center"
-                       Margin="0,0,0,44"/>
+                       FontSize="13" Foreground="#555555"
+                       HorizontalAlignment="Left"
+                       Margin="0,0,0,36"/>
 
-            <Button HorizontalContentAlignment="Center" Command="{Binding StartRaceCommand}"
-                    HorizontalAlignment="Center"
-                    Width="260" Height="56"
-                    CornerRadius="5"
-                    Margin="0,0,0,14"
-                    Cursor="Hand">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                        <GradientStop Color="#CC0044" Offset="0"/>
-                        <GradientStop Color="#FF0055" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-                <StackPanel Orientation="Horizontal" Spacing="14">
-                    <material:MaterialIcon Kind="PlayCircle" Width="26" Height="26" Foreground="White"/>
-                    <TextBlock Text="START RACE"
-                               FontSize="18" FontWeight="Black"
-                               LetterSpacing="3" Foreground="White"
-                               VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
+            <Grid ColumnDefinitions="*,4,*" Width="460">
 
-            <Button HorizontalContentAlignment="Center" Command="{Binding QuitCommand}"
-                    HorizontalAlignment="Center"
-                    Width="260" Height="44"
-                    CornerRadius="5"
-                    Background="#10101E"
-                    Cursor="Hand">
-                <StackPanel Orientation="Horizontal" Spacing="12">
-                    <material:MaterialIcon Kind="ExitToApp" Width="20" Height="20" Foreground="#445566"/>
-                    <TextBlock Text="QUIT" FontSize="14" FontWeight="Bold"
-                               LetterSpacing="3" Foreground="#445566"
-                               VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button>
+                <Button Grid.Column="0"
+                        Command="{Binding StartRaceCommand}"
+                        Background="#FF6B5B"
+                        Height="80" CornerRadius="2" Cursor="Hand"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                        <material:MaterialIcon Kind="PlayCircle" Width="22" Height="22" Foreground="#1C1C1C" VerticalAlignment="Center"/>
+                        <TextBlock Text="START RACE" FontSize="16" FontWeight="Black"
+                                   LetterSpacing="2" Foreground="#1C1C1C" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+                <Button Grid.Column="2"
+                        Command="{Binding QuitCommand}"
+                        Background="#4466FF"
+                        Height="80" CornerRadius="2" Cursor="Hand"
+                        HorizontalContentAlignment="Center"
+                        VerticalContentAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                        <material:MaterialIcon Kind="ExitToApp" Width="22" Height="22" Foreground="White" VerticalAlignment="Center"/>
+                        <TextBlock Text="QUIT" FontSize="16" FontWeight="Black"
+                                   LetterSpacing="2" Foreground="White" VerticalAlignment="Center"/>
+                    </StackPanel>
+                </Button>
+
+            </Grid>
+
         </StackPanel>
 
-        <TextBlock Grid.Row="2"
-                   Text="5 LAPS  ·  3 CARS  ·  300 SECONDS"
-                   FontSize="10" LetterSpacing="2"
-                   Foreground="#223344"
-                   HorizontalAlignment="Center"
-                   Margin="0,0,0,16"/>
     </Grid>
 </Window>
