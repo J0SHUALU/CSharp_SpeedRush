@@ -10,7 +10,6 @@ tactical 5-lap race against the clock. Every turn counts — burn fuel too fast 
 stall out; drive too conservatively and the timer will run out. The right pit-stop at the
 right moment can mean the difference between victory and defeat.
 
----
 
 ## Features
 
@@ -24,7 +23,6 @@ right moment can mean the difference between victory and defeat.
 - **MVVM Architecture** — clean separation of concerns using CommunityToolkit.Mvvm
 - **Unit Tested** — 10 xUnit tests covering fuel calculations, lap progression, and race states
 
----
 
 ## How to Play
 
@@ -42,15 +40,12 @@ right moment can mean the difference between victory and defeat.
    - ASCII bar = current lap progress
 7. **Win condition** — complete all 5 laps before running out of fuel or time
 
----
-
 
 ## Prerequisites
 
 - [.NET 8 SDK](https://dotnet.microsoft.com/download/dotnet/8) or later
 - A platform supported by Avalonia (Windows, macOS, Linux)
 
----
 
 ## How to Run
 
@@ -62,5 +57,4 @@ cd CSharpSpeedRush
 dotnet run
 ```
 
----
 
