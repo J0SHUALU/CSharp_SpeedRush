@@ -2,7 +2,6 @@
 
 A turn-based, time-focused racing simulation desktop game built with Avalonia UI and .NET 8.
 
----
 
 ## Description
 
