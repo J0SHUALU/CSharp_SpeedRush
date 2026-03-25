@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="CSharpSpeedRush.Tests/CSharpSpeedRush.Tests.csproj" />
+  <Project Path="CSharpSpeedRush/CSharpSpeedRush.csproj" />
+</Solution>

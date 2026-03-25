@@ -1,0 +1,14 @@
+# Build output
+bin/
+obj/
+
+# Visual Studio / Rider
+.vs/
+.idea/
+*.user
+
+# macOS
+.DS_Store
+
+# dotnet tools
+.config/dotnet-tools.json
