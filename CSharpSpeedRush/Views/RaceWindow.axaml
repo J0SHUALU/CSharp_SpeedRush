@@ -4,13 +4,13 @@
         xmlns:material="using:Material.Icons.Avalonia"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="820" d:DesignHeight="660"
+        mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="660"
         x:Class="CSharpSpeedRush.Views.RaceWindow"
         x:DataType="vm:RaceWindowViewModel"
         Title="Race — C# Speed Rush"
-        Width="820" Height="660"
+        Width="900" Height="660"
         WindowStartupLocation="CenterScreen"
-        Background="#080812"
+        Background="#1C1C1C"
         CanResize="False">
 
     <!--
@@ -21,309 +21,246 @@
     <!-- Root grid: layer 0 = race HUD, layer 1 = end-of-race overlay -->
     <Grid>
 
-    <Grid RowDefinitions="6,Auto,Auto,Auto,Auto,*,Auto,Auto">
+    <!-- ═══ HUD LAYER ═══ -->
+    <Grid RowDefinitions="80,*,44">
 
-        <!-- Neon stripe -->
-        <Border Grid.Row="0">
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                    <GradientStop Color="#FF0055" Offset="0"/>
-                    <GradientStop Color="#FF6600" Offset="0.5"/>
-                    <GradientStop Color="#FF0055" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>
-        </Border>
+        <!-- RACE HEADER: Lap | Fuel | Time -->
+        <Border Grid.Row="0" Background="#171717"
+                BorderThickness="0,0,0,1" BorderBrush="#2A2A2A">
+            <Grid ColumnDefinitions="240,*,*" Margin="0,0,0,0">
 
-        <!-- Header bar -->
-        <Border Grid.Row="1" Background="#0E0E1C" Padding="20,10">
-            <Grid ColumnDefinitions="*,Auto,*">
-                <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
-                    <material:MaterialIcon Kind="CarSports" Width="20" Height="20" Foreground="#FF0055"/>
-                    <TextBlock Text="{Binding SpeedStatus}"
-                               FontSize="12" FontWeight="SemiBold"
-                               Foreground="#667788" VerticalAlignment="Center"/>
-                </StackPanel>
-
-                <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12" HorizontalAlignment="Center">
-                    <material:MaterialIcon Kind="FlagCheckered" Width="24" Height="24" Foreground="#FF6600"/>
+                <!-- Current lap -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center" Margin="24,0,0,0">
                     <TextBlock Text="{Binding LapDisplay}"
-                               FontSize="28" FontWeight="Black" LetterSpacing="2"
-                               Foreground="White" VerticalAlignment="Center"/>
-                    <material:MaterialIcon Kind="FlagCheckered" Width="24" Height="24" Foreground="#FF6600"/>
+                               FontSize="32" FontWeight="Black" LetterSpacing="2"
+                               Foreground="White"/>
+                    <TextBlock Text="Grand Circuit" FontSize="9"
+                               Foreground="#3A3A3A" Margin="2,2,0,0"/>
                 </StackPanel>
 
-                <TextBlock Grid.Column="2"
-                           Text="C# SPEED RUSH"
-                           FontSize="10" FontWeight="Bold" LetterSpacing="2"
-                           Foreground="#1A2233"
-                           HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                <!-- Fuel level -->
+                <Grid Grid.Column="1" RowDefinitions="Auto,6,Auto" Margin="16,0,16,0"
+                      VerticalAlignment="Center">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="6">
+                        <material:MaterialIcon Kind="FuelPump" Width="13" Height="13"
+                                               Foreground="#888888" VerticalAlignment="Center"/>
+                        <TextBlock Text="Fuel" FontSize="10" FontWeight="Bold"
+                                   Foreground="#888888" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding FuelPercentage, StringFormat='{}{0:F0}%'}"
+                                   FontSize="10" FontWeight="Bold" Foreground="White"
+                                   Margin="4,0,0,0"/>
+                    </StackPanel>
+                    <ProgressBar Grid.Row="2" Value="{Binding FuelLevel}" Minimum="0" Maximum="100"
+                                 Height="6" Foreground="#C5C8FF" Background="#1E1E2E" CornerRadius="1"/>
+                </Grid>
+
+                <!-- Time remaining -->
+                <Grid Grid.Column="2" RowDefinitions="Auto,6,Auto" Margin="16,0,24,0"
+                      VerticalAlignment="Center">
+                    <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="6">
+                        <material:MaterialIcon Kind="Stopwatch" Width="13" Height="13"
+                                               Foreground="#888888" VerticalAlignment="Center"/>
+                        <TextBlock Text="Time" FontSize="10" FontWeight="Bold"
+                                   Foreground="#888888" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding TimeRemaining, StringFormat='{}{0:F0}s'}"
+                                   FontSize="10" FontWeight="Bold" Foreground="White"
+                                   Margin="4,0,0,0"/>
+                    </StackPanel>
+                    <ProgressBar Grid.Row="2" Value="{Binding TimePercentage}" Minimum="0" Maximum="100"
+                                 Height="6" Foreground="#4466FF" Background="#0D0D2A" CornerRadius="1"/>
+                </Grid>
+
             </Grid>
         </Border>
 
-        <!-- Fuel + Time gauges -->
-        <Grid Grid.Row="2" ColumnDefinitions="*,16,*" Margin="16,10,16,0">
+        <!-- CONTENT ROW: Event log | Center | Action buttons -->
+        <Grid Grid.Row="1" ColumnDefinitions="220,*,200">
 
-            <!-- Fuel -->
-            <Border Grid.Column="0" Background="#0E0E1C" CornerRadius="8"
-                    BorderThickness="1" BorderBrush="#1A2200" Padding="14,10">
-                <StackPanel Spacing="6">
-                    <Grid ColumnDefinitions="Auto,*,Auto">
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6">
-                            <material:MaterialIcon Kind="FuelPump" Width="16" Height="16" Foreground="#00FF88"/>
-                            <TextBlock Text="FUEL" FontSize="11" FontWeight="Black"
-                                       LetterSpacing="2" Foreground="#00FF88" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="2"
-                                   Text="{Binding FuelPercentage, StringFormat='{}{0:F0}%'}"
-                                   FontSize="11" FontWeight="Bold"
-                                   Foreground="#00FF88"/>
-                    </Grid>
-                    <ProgressBar Value="{Binding FuelLevel}" Minimum="0" Maximum="100"
-                                 Height="12" Foreground="#00FF88"
-                                 Background="#051205" CornerRadius="3"/>
+            <!-- EVENT LOG -->
+            <Border Grid.Column="0" Background="#191919"
+                    BorderThickness="0,0,1,0" BorderBrush="#252525"
+                    Padding="18,18,18,18">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,14">
+                        <material:MaterialIcon Kind="ClipboardList" Width="12" Height="12"
+                                               Foreground="#FF6B5B" VerticalAlignment="Center"/>
+                        <TextBlock Text="Event Log" FontSize="10" FontWeight="Bold"
+                                   Foreground="#FF6B5B" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <TextBlock Text="{Binding EventLogDisplay}"
+                               FontFamily="Courier New,Consolas,monospace"
+                               FontSize="11" LineHeight="20"
+                               Foreground="#555555" TextWrapping="Wrap"/>
                 </StackPanel>
             </Border>
 
-            <!-- Time -->
-            <Border Grid.Column="2" Background="#0E0E1C" CornerRadius="8"
-                    BorderThickness="1" BorderBrush="#001A33" Padding="14,10">
-                <StackPanel Spacing="6">
-                    <Grid ColumnDefinitions="Auto,*,Auto">
-                        <StackPanel Grid.Column="0" Orientation="Horizontal" Spacing="6">
-                            <material:MaterialIcon Kind="Stopwatch" Width="16" Height="16" Foreground="#0099FF"/>
-                            <TextBlock Text="TIME" FontSize="11" FontWeight="Black"
-                                       LetterSpacing="2" Foreground="#0099FF" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <TextBlock Grid.Column="2"
-                                   Text="{Binding TimeRemaining, StringFormat='{}{0:F0}s'}"
-                                   FontSize="11" FontWeight="Bold"
-                                   Foreground="#0099FF"/>
-                    </Grid>
-                    <ProgressBar Value="{Binding TimePercentage}" Minimum="0" Maximum="100"
-                                 Height="12" Foreground="#0099FF"
-                                 Background="#000D1A" CornerRadius="3"/>
-                </StackPanel>
-            </Border>
-        </Grid>
+            <!-- CENTER: Status + progress indicator -->
+            <StackPanel Grid.Column="1" VerticalAlignment="Center" Margin="28,0,28,0" Spacing="16">
 
-        <!-- Lap progress bar -->
-        <Border Grid.Row="3" Background="#070710" CornerRadius="8"
-                BorderThickness="1" BorderBrush="#111122"
-                Padding="16,10" Margin="16,8,16,0">
-            <StackPanel Spacing="5">
-                <StackPanel Orientation="Horizontal" Spacing="7">
-                    <material:MaterialIcon Kind="Speedometer" Width="14" Height="14" Foreground="#FF6600"/>
-                    <TextBlock Text="LAP PROGRESS" FontSize="10" FontWeight="Black"
-                               LetterSpacing="2" Foreground="#FF6600"/>
-                </StackPanel>
+                <TextBlock Text="{Binding SpeedStatus}"
+                           FontSize="12" FontWeight="Bold"
+                           Foreground="#444444" HorizontalAlignment="Center"
+                           TextWrapping="Wrap" TextAlignment="Center"/>
+
                 <TextBlock Text="{Binding ProgressBarDisplay}"
                            FontFamily="Courier New,Consolas,monospace"
-                           FontSize="15" Foreground="#00FF88"
+                           FontSize="16" Foreground="#4466FF"
                            HorizontalAlignment="Center"/>
+
             </StackPanel>
-        </Border>
 
-        <!-- Action buttons -->
-        <Grid Grid.Row="4" ColumnDefinitions="*,10,*,10,*" Margin="16,12,16,0">
+            <!-- ACTION BUTTONS -->
+            <Border Grid.Column="2" Background="#191919"
+                    BorderThickness="1,0,0,0" BorderBrush="#252525"
+                    Padding="14,18,14,18">
+                <StackPanel Spacing="8">
 
-            <!-- Speed Up -->
-            <Button HorizontalContentAlignment="Center" Grid.Column="0"
-                    Command="{Binding SpeedUpCommand}"
-                    IsEnabled="{Binding SpeedUpEnabled}"
-                    Height="70" CornerRadius="8" Cursor="Hand">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                        <GradientStop Color="#AA0033" Offset="0"/>
-                        <GradientStop Color="#FF0055" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-                <StackPanel Spacing="5" HorizontalAlignment="Center">
-                    <material:MaterialIcon Kind="FlashOn" Width="26" Height="26"
-                                           Foreground="White" HorizontalAlignment="Center"/>
-                    <TextBlock Text="SPEED UP" FontSize="11" FontWeight="Black"
-                               LetterSpacing="2" Foreground="White" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Actions" FontSize="9" FontWeight="Bold"
+                               Foreground="#3A3A3A" Margin="0,0,0,8"
+                               HorizontalAlignment="Center"/>
+
+                    <!-- Speed Up -->
+                    <Button Command="{Binding SpeedUpCommand}"
+                            IsEnabled="{Binding SpeedUpEnabled}"
+                            Background="#FF5545"
+                            Height="110" CornerRadius="2" Cursor="Hand"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+                        <StackPanel Spacing="6" HorizontalAlignment="Center">
+                            <material:MaterialIcon Kind="FlashOn" Width="24" Height="24"
+                                                   Foreground="#1C1C1C" HorizontalAlignment="Center"/>
+                            <TextBlock Text="SPEED UP" FontSize="14" FontWeight="Black"
+                                       LetterSpacing="1" Foreground="#1C1C1C"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Maintain Speed -->
+                    <Button Command="{Binding MaintainSpeedCommand}"
+                            IsEnabled="{Binding MaintainEnabled}"
+                            Background="#4466FF"
+                            Height="110" CornerRadius="2" Cursor="Hand"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+                        <StackPanel Spacing="6" HorizontalAlignment="Center">
+                            <material:MaterialIcon Kind="ArrowRightBold" Width="24" Height="24"
+                                                   Foreground="White" HorizontalAlignment="Center"/>
+                            <TextBlock Text="MAINTAIN" FontSize="14" FontWeight="Black"
+                                       LetterSpacing="1" Foreground="White"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
+                    <!-- Pit Stop -->
+                    <Button Command="{Binding PitStopCommand}"
+                            IsEnabled="{Binding PitStopEnabled}"
+                            Background="#9999CC"
+                            Height="110" CornerRadius="2" Cursor="Hand"
+                            HorizontalAlignment="Stretch"
+                            HorizontalContentAlignment="Center"
+                            VerticalContentAlignment="Center">
+                        <StackPanel Spacing="6" HorizontalAlignment="Center">
+                            <material:MaterialIcon Kind="Tools" Width="24" Height="24"
+                                                   Foreground="#1C1C1C" HorizontalAlignment="Center"/>
+                            <TextBlock Text="PIT STOP" FontSize="14" FontWeight="Black"
+                                       LetterSpacing="1" Foreground="#1C1C1C"
+                                       HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Button>
+
                 </StackPanel>
-            </Button>
+            </Border>
 
-            <!-- Maintain -->
-            <Button HorizontalContentAlignment="Center" Grid.Column="2"
-                    Command="{Binding MaintainSpeedCommand}"
-                    IsEnabled="{Binding MaintainEnabled}"
-                    Height="70" CornerRadius="8" Cursor="Hand">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                        <GradientStop Color="#004488" Offset="0"/>
-                        <GradientStop Color="#0099FF" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-                <StackPanel Spacing="5" HorizontalAlignment="Center">
-                    <material:MaterialIcon Kind="ArrowRightBold" Width="26" Height="26"
-                                           Foreground="White" HorizontalAlignment="Center"/>
-                    <TextBlock Text="MAINTAIN" FontSize="11" FontWeight="Black"
-                               LetterSpacing="2" Foreground="White" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Button>
-
-            <!-- Pit Stop -->
-            <Button HorizontalContentAlignment="Center" Grid.Column="4"
-                    Command="{Binding PitStopCommand}"
-                    IsEnabled="{Binding PitStopEnabled}"
-                    Height="70" CornerRadius="8" Cursor="Hand">
-                <Button.Background>
-                    <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                        <GradientStop Color="#005522" Offset="0"/>
-                        <GradientStop Color="#00CC55" Offset="1"/>
-                    </LinearGradientBrush>
-                </Button.Background>
-                <StackPanel Spacing="5" HorizontalAlignment="Center">
-                    <material:MaterialIcon Kind="Tools" Width="26" Height="26"
-                                           Foreground="White" HorizontalAlignment="Center"/>
-                    <TextBlock Text="PIT STOP" FontSize="11" FontWeight="Black"
-                               LetterSpacing="2" Foreground="White" HorizontalAlignment="Center"/>
-                </StackPanel>
-            </Button>
         </Grid>
 
-        <!-- Event log -->
-        <Border Grid.Row="5" Background="#07070F" CornerRadius="8"
-                BorderThickness="1" BorderBrush="#111122"
-                Padding="14,10" Margin="16,10,16,0">
-            <StackPanel Spacing="6">
-                <StackPanel Orientation="Horizontal" Spacing="7">
-                    <material:MaterialIcon Kind="ClipboardList" Width="13" Height="13" Foreground="#334455"/>
-                    <TextBlock Text="EVENT LOG" FontSize="10" FontWeight="Black"
-                               LetterSpacing="2" Foreground="#334455"/>
-                </StackPanel>
-                <TextBlock Text="{Binding EventLogDisplay}"
-                           FontFamily="Courier New,Consolas,monospace"
-                           FontSize="12" LineHeight="20"
-                           Foreground="#556677" TextWrapping="Wrap"/>
-            </StackPanel>
-        </Border>
-
-        <!-- Back to Menu (post-race only) -->
-        <Button HorizontalContentAlignment="Center" Grid.Row="6"
-                Command="{Binding BackToMenuCommand}"
-                IsVisible="{Binding RaceOver}"
-                HorizontalAlignment="Center"
-                Width="210" Height="42" CornerRadius="6"
-                Margin="0,10,0,0" Cursor="Hand"
-                Background="#0E0E1C">
-            <StackPanel Orientation="Horizontal" Spacing="10">
-                <material:MaterialIcon Kind="HomeVariant" Width="18" Height="18" Foreground="#445566"/>
-                <TextBlock Text="BACK TO MENU" FontSize="13" FontWeight="Bold"
-                           LetterSpacing="1" Foreground="#445566"
-                           VerticalAlignment="Center"/>
-            </StackPanel>
-        </Button>
-
-        <!-- Status bar -->
-        <Border Grid.Row="7" Background="#0A0A16"
-                BorderThickness="0,1,0,0" BorderBrush="#111122"
-                Padding="14,8" Margin="0,8,0,0">
+        <!-- STATUS BAR -->
+        <Border Grid.Row="2" Background="#131313"
+                BorderThickness="0,1,0,0" BorderBrush="#252525"
+                Padding="24,0">
             <TextBlock Text="{Binding StatusMessage}"
-                       FontSize="12" Foreground="#778899"
-                       TextWrapping="Wrap" HorizontalAlignment="Center"/>
+                       FontSize="11" Foreground="#555555"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"/>
         </Border>
+
     </Grid>
 
-    <!-- End-of-race overlay: slides over the HUD when RaceOver becomes true -->
+    <!-- ═══ END-OF-RACE OVERLAY ═══ -->
     <Border IsVisible="{Binding RaceOver}"
-            Background="#CC080812"
+            Background="#E6131313"
             HorizontalAlignment="Stretch"
             VerticalAlignment="Stretch">
-        <Border HorizontalAlignment="Center"
-                VerticalAlignment="Center"
-                CornerRadius="14"
-                Padding="48,36"
-                MinWidth="360">
-            <Border.Background>
-                <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                    <GradientStop Color="#1A1A2E" Offset="0"/>
-                    <GradientStop Color="#0D0D1A" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.Background>
-            <Border.BorderBrush>
-                <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
-                    <GradientStop Color="#FF0055" Offset="0"/>
-                    <GradientStop Color="#330011" Offset="1"/>
-                </LinearGradientBrush>
-            </Border.BorderBrush>
-            <Border.BorderThickness>2</Border.BorderThickness>
+        <Grid ColumnDefinitions="*,Auto,*" RowDefinitions="*,Auto,*">
 
-            <StackPanel Spacing="0" HorizontalAlignment="Center">
+            <Border Grid.Column="1" Grid.Row="1"
+                    Background="#1E1E1E"
+                    BorderBrush="#2A2A2A" BorderThickness="1"
+                    CornerRadius="3" MinWidth="660"
+                    Padding="50,44,50,44">
+                <Grid ColumnDefinitions="*,48,240">
 
-                <!-- Icon: trophy for win, flag for loss -->
-                <material:MaterialIcon Kind="Trophy"
-                                       Width="64" Height="64"
-                                       Foreground="#FF9900"
-                                       HorizontalAlignment="Center"
-                                       IsVisible="{Binding IsVictory}"
-                                       Margin="0,0,0,10"/>
-                <material:MaterialIcon Kind="FlagRemove"
-                                       Width="64" Height="64"
-                                       Foreground="#FF0055"
-                                       HorizontalAlignment="Center"
-                                       IsVisible="{Binding !IsVictory}"
-                                       Margin="0,0,0,10"/>
+                    <!-- Outcome text + stats -->
+                    <StackPanel Grid.Column="0" VerticalAlignment="Center">
 
-                <!-- Headline -->
-                <TextBlock Text="{Binding OutcomeHeadline}"
-                           FontSize="40" FontWeight="Black"
-                           LetterSpacing="4"
-                           HorizontalAlignment="Center"
-                           Margin="0,0,0,6">
-                    <TextBlock.Foreground>
-                        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                            <GradientStop Color="#FF9900" Offset="0"/>
-                            <GradientStop Color="#FFCC00" Offset="1"/>
-                        </LinearGradientBrush>
-                    </TextBlock.Foreground>
-                </TextBlock>
+                        <!-- Victory icon + tag -->
+                        <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,16"
+                                    IsVisible="{Binding IsVictory}">
+                            <material:MaterialIcon Kind="Trophy" Width="22" Height="22" Foreground="#FF9900"/>
+                            <Border Background="#FF5545" CornerRadius="2" Padding="10,4">
+                                <TextBlock Text="Race Complete" FontSize="10" FontWeight="Bold"
+                                           Foreground="#1C1C1C"/>
+                            </Border>
+                        </StackPanel>
 
-                <!-- Divider -->
-                <Border Height="2" Width="240" CornerRadius="1" Margin="0,4,0,18">
-                    <Border.Background>
-                        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                            <GradientStop Color="Transparent" Offset="0"/>
-                            <GradientStop Color="#FF6600" Offset="0.5"/>
-                            <GradientStop Color="Transparent" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Border.Background>
-                </Border>
+                        <!-- Loss icon + tag -->
+                        <StackPanel Orientation="Horizontal" Spacing="10" Margin="0,0,0,16"
+                                    IsVisible="{Binding !IsVictory}">
+                            <material:MaterialIcon Kind="FlagRemove" Width="22" Height="22" Foreground="#FF6B5B"/>
+                            <Border Background="#333333" CornerRadius="2" Padding="10,4">
+                                <TextBlock Text="Race Over" FontSize="10" FontWeight="Bold"
+                                           Foreground="#888888"/>
+                            </Border>
+                        </StackPanel>
 
-                <!-- Stats -->
-                <TextBlock Text="{Binding OutcomeDetail}"
-                           FontFamily="Courier New,Consolas,monospace"
-                           FontSize="14" LineHeight="26"
-                           Foreground="#8899AA"
-                           HorizontalAlignment="Center"
-                           TextAlignment="Center"
-                           Margin="0,0,0,28"/>
+                        <TextBlock Text="{Binding OutcomeHeadline}"
+                                   FontSize="48" FontWeight="Black"
+                                   LetterSpacing="2" Foreground="#FF6B5B"
+                                   TextWrapping="Wrap" Margin="0,0,0,24"/>
 
-                <!-- Back to Menu -->
-                <Button HorizontalContentAlignment="Center" Command="{Binding BackToMenuCommand}"
-                        HorizontalAlignment="Center"
-                        Width="220" Height="48"
-                        CornerRadius="6"
-                        Cursor="Hand">
-                    <Button.Background>
-                        <LinearGradientBrush StartPoint="0%,0%" EndPoint="100%,0%">
-                            <GradientStop Color="#CC0044" Offset="0"/>
-                            <GradientStop Color="#FF0055" Offset="1"/>
-                        </LinearGradientBrush>
-                    </Button.Background>
-                    <StackPanel Orientation="Horizontal" Spacing="12">
-                        <material:MaterialIcon Kind="HomeVariant" Width="20" Height="20" Foreground="White"/>
-                        <TextBlock Text="BACK TO MENU"
-                                   FontSize="14" FontWeight="Black"
-                                   LetterSpacing="2" Foreground="White"
-                                   VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding OutcomeDetail}"
+                                   FontFamily="Courier New,Consolas,monospace"
+                                   FontSize="13" LineHeight="26"
+                                   Foreground="#666666"/>
                     </StackPanel>
-                </Button>
 
-            </StackPanel>
-        </Border>
+                    <!-- Divider -->
+                    <Border Grid.Column="1" Width="1" Background="#2A2A2A"
+                            VerticalAlignment="Stretch" HorizontalAlignment="Center"/>
+
+                    <!-- Back to menu -->
+                    <StackPanel Grid.Column="2" VerticalAlignment="Center">
+                        <Button Command="{Binding BackToMenuCommand}"
+                                Background="#FF6B5B"
+                                Height="56" CornerRadius="2" Cursor="Hand"
+                                HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
+                                VerticalContentAlignment="Center">
+                            <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+                                <material:MaterialIcon Kind="HomeVariant" Width="18" Height="18"
+                                                       Foreground="#1C1C1C" VerticalAlignment="Center"/>
+                                <TextBlock Text="Back to Menu" FontSize="13" FontWeight="Black"
+                                           Foreground="#1C1C1C" VerticalAlignment="Center"/>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+        </Grid>
     </Border>
 
     </Grid>
